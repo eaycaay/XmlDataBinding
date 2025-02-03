@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +23,15 @@ namespace XmlDataBinding.Common
 
         public static Data DeserializeFromXml(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                Data defaultCompany = new Data
+                {
+                    DataList = new List<DataItem>()
+                };
+                SerializeToXml(defaultCompany, filePath);
+            }
+
             XmlSerializer serializer = new XmlSerializer(typeof(Data));
             using (TextReader reader = new StreamReader(filePath))
             {
